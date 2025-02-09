@@ -51,9 +51,6 @@ namespace inventario.Service
             {
                 var sql = "EXEC sp_piezas @i_operacion = 'Q', @i_Codigo = @i_Codigo, @i_Marca = @i_Marca, @i_Modelo = @i_Modelo, @i_Anio = @i_Anio, @i_Nombre = @i_Nombre";
 
-                // Imprimir la consulta SQL generada para depuración
-                Console.WriteLine($"Consulta SQL: {sql}");
-
                 var resultado = await _context.PiezasResultado
                     .FromSqlRaw(sql,
                         new SqlParameter("@i_operacion", "Q"), // 'Q' para consulta
@@ -64,7 +61,7 @@ namespace inventario.Service
                         new SqlParameter("@i_Nombre", string.IsNullOrEmpty(nombre) ? (object)DBNull.Value : (object)nombre)
                     )
                     .ToListAsync();
-
+                Console.WriteLine($"Consulta SQL: {sql}");
                 return resultado;
             }
             catch (Exception ex)

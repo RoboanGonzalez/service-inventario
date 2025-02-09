@@ -12,6 +12,8 @@ using Microsoft.Data;
 using System.Data.SqlClient;
 using System.Data;
 using inventario.Service;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Diagnostics;
 
 
 namespace inventario.Controllers
@@ -49,16 +51,17 @@ namespace inventario.Controllers
         public async Task<IActionResult> ConsultarPiezas([FromBody] PiezaFiltroDTO filtro)
         {
 
-
             var piezas = await _piezaService.ConsultarPiezas(filtro.Codigo, filtro.Marca, filtro.Modelo, filtro.Anio, filtro.Nombre);
+
+            Console.WriteLine("Este es un mensaje en la ventana de salida de Visual Studio");
 
             if (piezas.Any())
             {
-                return Ok(piezas);
+                return Ok(piezas);  // Si se encuentran piezas, devolverlas directamente
             }
             else
             {
-                return NotFound(new { mensaje = "No se encontraron piezas con los criterios proporcionados" });
+                return Ok(new List<PiezaResultado>());  // Retorna una lista vacía de tipo PiezaResultado
             }
         }
 
